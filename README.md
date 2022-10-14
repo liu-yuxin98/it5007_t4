@@ -21,11 +21,11 @@
 * MongoDB needs to be started in Docker container before you can test T4 code. 
 * You can start MongoDB server (mongod) using the command: ```systemctl start mongod```
 * How to check if MongoDB server is running: ```ps aux | grep mongod```. This will return the details of the running MongoDB server process. For example: ```mongodb    428 19.0  0.8 1517420 112404 ?      Ssl  02:57   0:00 /usr/bin/mongod --config /etc/mongod.conf```.
-* Testing with MongoDB client: ```mongo```
+* Testing with MongoDB client: ```mongo```. You can try out some of the commands taught in the Lecture.
 * Initializing the project DB with initial traveller list. The code for this needs to be written by the student in scripts/init.mongo.js (Q1). Once this is written, you can test it out using the command: ```mongo tickettoride scripts/init.mongo.js```.
 
 
-## IT5007 Tutorial Submission
+# IT5007 Tutorial Submission
 * Commit your changes. Push your changes. Commit will create a new version corresponding to your code changes. Push will push it to the remote repository for TAs and Instructor to evaluate. You miss either step, your code will not be available for evaluation!
 * Git commit should be used for committing your code. ```git commit -am "relevant message for commit"```. In this command, -a option adds the modified files to the list of files to be committed and -m option allows you to specify a commit message (e.g., "added blacklist feature").
 * Push the code to your PRIVATE github classroom repository.
