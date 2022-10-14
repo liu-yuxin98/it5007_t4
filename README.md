@@ -11,7 +11,7 @@
     - ```cd /home```
     - $ ```git clone <your own github classroom repository url for T4> it5007-tutorial4```
 
-#Working on the project
+# Working on the project
 * ```cd /home/it5007-tutorial4/``` from VSCode and work on the problem.
 * As usual, the first step in any newly downloaded repository is to run ```npm install``` to install dependencies.
 * Compilation: The code may not compile when you say ```npm run compile```. This is because, the code is incomplete. [Hint: If you want to test out a small code change you have added, comment all incomplete functions and try to compile. This may not always work but it is worth the try.]
