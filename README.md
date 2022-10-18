@@ -30,9 +30,9 @@
 * Git commit should be used for committing your code. ```git commit -am "relevant message for commit"```. In this command, -a option adds the modified files to the list of files to be committed and -m option allows you to specify a commit message (e.g., "added blacklist feature").
 * Push the code to your PRIVATE github classroom repository.
   * Navigate to /home/it5007-tutorial4. 
-  * Run the following command: $```git remote add myrepository <https link to your git repository>```
-  * To push the changes: $```git push myrepository```
-  * If you are coding in a branch use the following command instead: $```git push -u myrepository <mybranchname>```
+  * You can check if origin is correct with the following command: ```git remote -v```. Make sure that the url listed is your own T4 url.
+  * To push the changes: $```git push origin```
+  * If you are coding in a branch use the following command instead: $```git push -u origin <mybranchname>```
   * For the submission, create a file with the following contents:
     - Github repo link and branch name.
     - Steps to set up your application after cloning/downloading the repository (including steps to add more packages if needed)
