@@ -1,0 +1,14 @@
+Github repo link and branch name.
+    repo link: https://github.com/liu-yuxin98/it5007_t4
+    branch name: main
+
+
+steps to set up your application
+
+
+
+How to launch your application
+
+
+
+features I have implemented.
