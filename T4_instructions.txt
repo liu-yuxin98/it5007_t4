@@ -5,7 +5,12 @@ Github repo link and branch name.
 
 steps to set up your application
 
-
+1) git clone https://github.com/liu-yuxin98/it5007_t4 locally
+2) cd into folder
+3) npm install to install all required package
+4) start mongodb by type in  systemctl start mongod
+5) npm run compile
+6) 
 
 How to launch your application
 
