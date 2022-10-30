@@ -10,10 +10,13 @@ steps to set up your application
 3) npm install to install all required package
 4) start mongodb by type in  systemctl start mongod
 5) npm run compile
-6) 
+
 
 How to launch your application
 
-
+1) start mongodb
+2) npm start
+3) npm run watch
 
 features I have implemented.
+    all the features are implemented
