@@ -9,36 +9,44 @@ let db;//Variable that points to the real DB.
 
 
 //Resolver1: Query
-async function listTravellers()
-{
-	/*Q2: Write code to talk to DB and read the list of travellers
-	 * */
+async function listTravellers() {
+  /*Q2: Write code to talk to DB and read the list of travellers
+   * */
+  let travellers = await db.collection('travellers').find({}).toArray();
+  return travellers;
 
-
-	/*End of Q2*/
+  /*End of Q2*/
 }
 
 //Resolver2: Mutation
-async function addTraveller(_, {ticket})
-{	
-	console.log("Adding traveller", ticket);
-	async function getNextSequence(name) {
-	  const result = await db.collection('counters').findOneAndUpdate(
-	    { _id: name },//find the entry that matches this _id
-	    { $inc: { current: 1 } }, //perform the update
-	    { returnOriginal: false },//do not return the old value, only updated counter value.
-	  );
-	  return result.value.current;
-	}
-	ticket.id = await getNextSequence('fixedindex');
+async function addTraveller(_, { ticket }) {
+  console.log("Adding traveller", ticket);
+  async function getNextSequence(name) {
+    const result = await db.collection('counters').findOneAndUpdate(
+      { _id: name },//find the entry that matches this _id
+      { $inc: { current: 1 } }, //perform the update
+      { returnOriginal: false },//do not return the old value, only updated counter value.
+    );
+    return result.value.current;
+  }
+  ticket.id = await getNextSequence('fixedindex');
 
-	/*Q2: Write code to talk to DB and add a new ticket.
-	 * Make sure you return the correct value of the correct type as per the schema.*/
+  /*Q2: Write code to talk to DB and add a new ticket.
+   * Make sure you return the correct value of the correct type as per the schema.*/
 
+  const matchBlacklist = await db.collection('blacklist').find({ name: ticket.name }).count()
+  if (matchBlacklist > 0) {
+    throw new UserInputError('Invalid inputs', {
+      errors: [`${ticket.name} is on the blacklist`],
+    });
+  }
+  ticket.bookingTime = new Date();
+  const result = await db.collection('travellers').insertOne(ticket);
+  return await db.collection('travellers').findOne({ _id: result.insertedId });
 
-	/*End of Q2*/
+  /*End of Q2*/
 }
-	
+
 
 /*Resolver3: GraphQL Scalar
 //Below function is a GraphQL scalar that defines a valid Date.
@@ -65,21 +73,27 @@ const GraphQLDate = new GraphQLScalarType({
   },
 });
 
-async function deleteTraveller()
-{
-	/*Q2: Write code to talk to DB and delete the given passenger.
-	 * Note: Ensure that the function parameters for deleteTraveller() defined above  matches the
-	 * schema defined in travellerschema.graphql.*/
-
-
-	/*End of Q2*/
+async function deleteTraveller(_, { name }) {
+  /*Q2: Write code to talk to DB and delete the given passenger.
+   * Note: Ensure that the function parameters for deleteTraveller() defined above  matches the
+   * schema defined in travellerschema.graphql.*/
+  const savedTraveller = await db.collection('travellers').findOne(name);
+  const result = await db.collection('travellers').deleteOne(name);
+  if (result.deletedCount === 0) {
+    throw new UserInputError('Invalid input', { errors: [`Could not find a traveler with ${name}`] })
+  }
+  return savedTraveller;
+  /*End of Q2*/
 }
 
 
 /*Q4: Placeholder for blacklistTraveller() resolver.
  * This function should accept a traveller name and add them to a collection named blacklist.
  * */
-
+async function addBlacklist(_, name) {
+  const result = await db.collection('blacklist').insertOne({ name: name });
+  return await db.collection('blacklist').findOne({});
+}
 
 
 /*End of Q4*/
@@ -92,6 +106,7 @@ const resolvers = {
     addTraveller,
     deleteTraveller,
     /*Q4. Make an entry for blacklistTraveller resolver here*/
+    addBlacklist,
   },
   GraphQLDate,
 };
@@ -110,11 +125,11 @@ const server = new ApolloServer({
 server.applyMiddleware({ app, path: '/graphql' });
 
 async function connectToDb() {
-	  const url = 'mongodb://localhost/tickettoride';
-	  const client = new MongoClient(url, { useNewUrlParser: true });
-	  await client.connect();
-	  console.log('Connected to Ticket To Ride MongoDB at', url);
-	  db = client.db();
+  const url = 'mongodb://localhost/tickettoride';
+  const client = new MongoClient(url, { useNewUrlParser: true });
+  await client.connect();
+  console.log('Connected to Ticket To Ride MongoDB at', url);
+  db = client.db();
 }
 
 (async function () {

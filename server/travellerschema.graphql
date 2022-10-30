@@ -1,7 +1,6 @@
 scalar GraphQLDate
 
 type Ticket {
-
 	_id: ID!
 	id: Int!
 	name: String!
@@ -12,7 +11,6 @@ type Ticket {
 input InputTicket {
 	name: String!
 	phone: Int!
-	bookingTime: GraphQLDate!
 }
 
 type Query {
@@ -22,5 +20,5 @@ type Query {
 type Mutation {
 	addTraveller(ticket: InputTicket!): Ticket!
 	deleteTraveller(travellername: String!): Boolean!
+	addBlacklist(travellername: String!): 
 }
-

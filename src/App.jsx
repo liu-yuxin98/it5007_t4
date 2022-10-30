@@ -1,4 +1,3 @@
-
 const dateRegex = new RegExp('^\\d\\d\\d\\d-\\d\\d-\\d\\d');
 function jsonDateReviver(key, value) {
   if (dateRegex.test(value)) return new Date(value);
@@ -122,22 +121,45 @@ class Delete extends React.Component {
  * - The submit handler should make a call to blacklistTraveller() function with the 
  *   right parameters.
  * - Make sure to invalidate/clear the form input fileds in the UI during cleanup.*/
-
+class Blacklist extends React.Component {
+  constructor() {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleSubmit(e) {
+    e.preventDefault();
+    const form = document.forms.AddBlacklist;
+    const passenger = {
+      name: form.travellername.value,
+    };
+    this.props.blacklistTraveller(passenger);
+    form.travellername.value = "";
+  }
+  render() {
+    return (
+      <form name="addBlacklist" onSubmit={this.handleSubmit}>
+        <input type="text" name="travellername" placeholder="Name" />
+        <button>Add</button>
+      </form>
+    );
+  }
+}
 
 /*End of Q4*/
 
-
 class Homepage extends React.Component {
 	constructor() {
-	super();
+	  super();
 	}
 	render(){
-	return (
-	<div>
-		<h5>Placeholder for Homepage</h5>
-	</div>);
+	  return (
+	  <div>
+		  <h5>Placeholder for Homepage</h5>
+	  </div>
+    );
 	}
 }
+
 class TicketToRide extends React.Component {
   constructor() {
     super();
@@ -160,8 +182,13 @@ class TicketToRide extends React.Component {
      * - Write the query
      * - Make a call to graphQLFetch with parameter: query
      * - Post process data and take some action (e.g., re-load UI)  */
-  
-
+    const query = `query {
+      listTravellers {
+        id name phone bookingTime
+      }
+    }`;
+    const data = await graphQLFetch(query);
+    this.setState({travellers: data.listTravellers});
      /*End of Q3*/
   }
 
@@ -170,8 +197,13 @@ class TicketToRide extends React.Component {
      * - Write the mutation
      * - Make a call to graphQLFetch with two parameters: mutation query, {variable}
      * - Post process data and take some action (e.g., re-load UI)  */
-  
-
+    const query = `mutation addTraveller($passenger: InputTicket!) {
+      addTraveller(traveller: $passenger) {
+        name phone
+      }
+    }`;
+    const data = await graphQLFetch(query, {traveler})
+    this.loadData();
      /*End of Q3*/
   }
 
@@ -180,20 +212,31 @@ class TicketToRide extends React.Component {
      * - Write the mutation
      * - Make a call to graphQLFetch with two parameters: mutation query, {variable}
      * - Post process data and take some action (e.g., re-load UI)  */
-  
-
+    const query = `mutation deleteTraveller($passenger: String!) {
+      deleteTraveller(name: $passenger) {
+        name
+      }
+    }`;
+    const data = await graphQLFetch(query, {name});
+    this.loadData();
      /*End of Q3*/
   }
+
   async blacklistTraveller(passenger) {
     /*Q4: Code to blacklist traveller at the back-end
      * - Write a mutation to blacklist traveller by providing the name.
      * - Make a call to graphQLFetch to execute the query.
      * - graphQLFetch accepts two parameters: query and {variable}  
      * - This GraphQL API call does not return anything. */
-    
-
+    const query = `mutation addBlacklist($passenger: String!) {
+      addBlacklist(name: $passenger) {
+        name
+      }
+    }`;
+    const data = await graphQLFetch(query, {name});
     /*End of Q4*/
   }
+
   render() {
     return (
       <div>

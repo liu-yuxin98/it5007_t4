@@ -16,8 +16,12 @@ db.blacklist.remove({});
  * Create a list of Travellers with necessary fields. 
  * Enter the list of travellers into the DB collection named 'travellers'.
  * */
+const travellers_init = [
+    { id: "1", name: "Alice", phone: "88664422", bookingTime: new Date('2022-10-18') },
+    { id: "2", name: "Boris", phone: "88112233", bookingTime: new Date('2022-10-19') },
+];
 
-
+db.travellers.insertMany(travellers_init);
 /*Q1 code ends here*/
 
 
